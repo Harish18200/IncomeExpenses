@@ -26,15 +26,15 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Total Income
-                    <span class="badge badge-primary badge-pill incomeValue">{{ $incomes}}</span>
+                    <span class="badge badge-primary badge-pill incomeValue"> $ {{ $incomes}}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Total Expense
-                    <span class="badge badge-danger badge-pill expenseValue">{{ $expenses }}</span>
+                    <span class="badge badge-danger badge-pill expenseValue"> $ {{ $expenses }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Balance
-                    <span class="badge badge-primary badge-pill">{{ $balance }}</span>
+                    <span class="badge badge-primary badge-pill"> $ {{ $balance }}</span>
                 </li>
             </ul>
         </div>

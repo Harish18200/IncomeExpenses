@@ -10,7 +10,7 @@ class PaynowTransferController extends Controller
 {
     public function index()
     {
-        $data['PaynowTransfer'] = PaynowTransfer::where('user_id', Auth::user()->id)->latest()->paginate(12);
+        $data['PaynowTransfer'] = PaynowTransfer::where('user_id', Auth::user()->id)->paginate(12);
         $data['totalpaynowTransfer'] = PaynowTransfer::where('user_id', Auth::user()->id)->sum('transfer_amount');
 
         return view('pages.paynowTransfer.index', $data);

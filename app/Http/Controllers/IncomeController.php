@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Income;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
 class IncomeController extends Controller
@@ -14,7 +15,7 @@ class IncomeController extends Controller
     }
     public function index()
     {
-        $data['incomes'] = Income::where('user_id', Auth::user()->id)->latest()->paginate(12);
+        $data['incomes'] = Income::where('user_id', Auth::user()->id)->paginate(12);
         $data['totalIncomes'] = Income::where('user_id', Auth::user()->id)->sum('income_amount');
 
         return view('pages.incomes.index', $data);
@@ -30,7 +31,7 @@ class IncomeController extends Controller
         $request->validate([
             'income_title' => 'required',
             'income_amount' => 'required',
-            'income_date'=> 'required'
+            'income_date' => 'required'
         ]);
 
         $incomes = new Income();
@@ -54,7 +55,7 @@ class IncomeController extends Controller
         $request->validate([
             'income_title' => 'required',
             'income_amount' => 'required',
-            'income_date'=> 'required'
+            'income_date' => 'required'
         ]);
 
         $income = Income::findOrFail($request->income_id);
@@ -70,5 +71,26 @@ class IncomeController extends Controller
     {
         Income::findOrFail($id)->delete();
         return back()->with('message', 'Income details deleted successfully');
+    }
+
+    public function incomePdf(Request $request)
+    {
+        $request->validate([
+            'year' => 'required|digits:4',
+            'month' => 'required|digits:2',
+        ]);
+
+        $date = "1-{$request->month}-{$request->year}";
+
+        $incomes = Income::whereYear('income_date', $request->year)
+            ->whereMonth('income_date', $request->month)
+            ->get();
+
+        if ($incomes->isEmpty()) {
+            return redirect()->route('incomes.index')->with('error', 'No data found for selected month/year.');
+        }
+
+        $pdf = Pdf::loadView('pages.incomes.pdf', compact('incomes', 'date'));
+        return $pdf->download("income_report_{$date}.pdf");
     }
 }

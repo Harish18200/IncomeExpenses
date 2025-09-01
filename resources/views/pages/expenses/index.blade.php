@@ -23,7 +23,7 @@
 				  </li>
 				  <li class="list-group-item d-flex justify-content-between align-items-center">
 				    Total Expense
-                      <span class="badge badge-danger badge-pill">{{ $totalExpenses }}</span>
+                      <span class="badge badge-danger badge-pill"> $ {{ $totalExpenses }}</span>
 				  </li>
 				</ul>
         	</div>
@@ -49,7 +49,7 @@
                                 <th>#</th>
                                 <th>Date</th>
                                 <th>Title</th>
-                                <th>Amount</th>
+                                <th>Amount (dollar)</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -57,9 +57,9 @@
                             @forelse($expenses as $expense)
                                 <tr>
                                     <td>{{ $loop->iteration + ($expenses->currentPage()-1)*$expenses->perPage() }}</td>
-                                    <td>{{ $expense->expense_date }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($expense->expense_date)->format('d-m-Y') }}</td>
                                     <td>{{ $expense->expense_title }}</td>
-                                    <td><strong> {{ number_format($expense->expense_amount, 2) }}</strong></td>
+                                    <td><strong>$ {{ number_format($expense->expense_amount, 2) }}</strong></td>
                                     <td class="text-center">
                                         <a href="{{ route('expenses.edit',$expense->id) }}" class="btn btn-sm btn-success">
                                             <i class="fa fa-edit"></i>

@@ -10,7 +10,7 @@ class ExpenseController extends Controller
 {
     public function index()
     {
-        $data['expenses'] = Expense::where('user_id', Auth::user()->id)->latest()->paginate(12);
+        $data['expenses'] = Expense::where('user_id', Auth::user()->id)->paginate(12);
         $data['totalExpenses'] = Expense::where('user_id', Auth::user()->id)->sum('expense_amount');
 
         return view('pages.expenses.index', $data);

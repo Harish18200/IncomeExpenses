@@ -23,7 +23,7 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Total PaynowTransfer
-                    <span class="badge badge-danger badge-pill">{{ $totalpaynowTransfer }}</span>
+                    <span class="badge badge-danger badge-pill">$ {{ $totalpaynowTransfer }}</span>
                 </li>
             </ul>
         </div>
@@ -49,7 +49,7 @@
                                     <th>#</th>
                                     <th>Date</th>
                                     <th>Title</th>
-                                    <th>Amount</th>
+                                    <th>Amount (dollar)</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -57,9 +57,9 @@
                                 @forelse($PaynowTransfer as $transfer)
                                 <tr>
                                     <td>{{ $loop->iteration + ($PaynowTransfer->currentPage() - 1) * $PaynowTransfer->perPage() }}</td>
-                                    <td>{{ $transfer->transfer_date }}</td>
+                                   <td>{{ \Carbon\Carbon::parse($PaynowTransfer->transfer_date)->format('d-m-Y') }}</td>
                                     <td>{{ $transfer->transfer_title }}</td>
-                                    <td><strong> {{ number_format($transfer->transfer_amount, 2) }}</strong></td>
+                                    <td><strong>$ {{ number_format($transfer->transfer_amount, 2) }}</strong></td>
                                     <td class="text-center">
                                         <a href="{{ route('paynowTransfer.edit',$transfer->id) }}" class="btn btn-sm btn-success">
                                             <i class="fa fa-edit"></i>
